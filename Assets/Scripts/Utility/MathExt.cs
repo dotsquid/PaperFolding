@@ -2,6 +2,10 @@
 
 public static class MathExt
 {
+    public const double PI = System.Math.PI;
+    public const double TWO_PI = PI * 2.0;
+    public const double HALF_PI = PI * 0.5;
+
     public static Vector2 Rotate(this Vector2 v, float degrees)
     {
         return Quaternion.Euler(0, 0, degrees) * v;
@@ -149,5 +153,130 @@ public static class MathExt
         float p = (val_t - t.min) / (t.max - t.min);
         float val = r.min + (r.max - r.min) * curve.Evaluate(p);
         return Mathf.Clamp(val, real_min_r, real_max_r);
+    }
+
+    // Floating-point modulo
+    // The result (the remainder) has same sign as the divisor.
+    // Similar to matlab's mod(); Not similar to fmod() -   Mod(-3,4)= 1   fmod(-3,4)= -3
+    public static float Mod(float x, float y)
+    {
+        if (0.0 == y)
+            return x;
+
+        float m = x - y * (float)System.Math.Floor(x / y);
+
+        // handle boundary cases resulted from floating-point cut off:
+
+        if (y > 0)              // modulo range: [0..y)
+        {
+            if (m >= y)           // Mod(-1e-16             , 360.    ): m= 360.
+                return 0;
+
+            if (m < 0)
+            {
+                if (y + m == y)
+                    return 0; // just in case...
+                else
+                    return y + m; // Mod(106.81415022205296 , m_TWO_PI ): m= -1.421e-14 
+            }
+        }
+        else                    // modulo range: (y..0]
+        {
+            if (m <= y)           // Mod(1e-16              , -360.   ): m= -360.
+                return 0;
+
+            if (m > 0)
+            {
+                if (y + m == y)
+                    return 0; // just in case...
+                else
+                    return y + m; // Mod(-106.81415022205296, -m_TWO_PI): m= 1.421e-14 
+            }
+        }
+
+        return m;
+    }
+
+    public static double Mod(double x, double y)
+    {
+        if (0.0 == y)
+            return x;
+
+        double m = x - y * System.Math.Floor(x / y);
+
+        // handle boundary cases resulted from floating-point cut off:
+
+        if (y > 0)              // modulo range: [0..y)
+        {
+            if (m >= y)           // Mod(-1e-16             , 360.    ): m= 360.
+                return 0;
+
+            if (m < 0)
+            {
+                if (y + m == y)
+                    return 0; // just in case...
+                else
+                    return y + m; // Mod(106.81415022205296 , m_TWO_PI ): m= -1.421e-14 
+            }
+        }
+        else                    // modulo range: (y..0]
+        {
+            if (m <= y)           // Mod(1e-16              , -360.   ): m= -360.
+                return 0;
+
+            if (m > 0)
+            {
+                if (y + m == y)
+                    return 0; // just in case...
+                else
+                    return y + m; // Mod(-106.81415022205296, -m_TWO_PI): m= 1.421e-14 
+            }
+        }
+
+        return m;
+    }
+
+    // wrap [rad] angle to [-PI..PI)
+    public static float WrapPosNegPI(float fAng)
+    {
+        return Mod(fAng + (float)PI, (float)TWO_PI) - (float)PI;
+    }
+
+    public static double WrapPosNegPI(double fAng)
+    {
+        return Mod(fAng + PI, TWO_PI) - PI;
+    }
+
+    // wrap [rad] angle to [0..TWO_PI)
+    public static float WrapTwoPI(float fAng)
+    {
+        return Mod(fAng, (float)TWO_PI);
+    }
+
+    public static double WrapTwoPI(double fAng)
+    {
+        return Mod(fAng, TWO_PI);
+    }
+
+    // wrap [deg] angle to [-180..180)
+    public static float WrapPosNeg180(float fAng)
+    {
+        return Mod(fAng + 180.0f, 360.0f) - 180.0f;
+    }
+
+    public static double WrapPosNeg180(double fAng)
+    {
+        return Mod(fAng + 180.0, 360.0) - 180.0;
+    }
+
+    // wrap [deg] angle to [0..360)
+    public static float Wrap360(float fAng)
+    {
+        return Mod(fAng, 360.0f);
+    }
+
+    public static double Wrap360(double fAng)
+    {
+        return Mod(fAng, 360.0);
     }
 }

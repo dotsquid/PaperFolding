@@ -18,6 +18,8 @@ public class FoldDragPoint : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
     private Type _type;
     [SerializeField]
     private FoldDispatcher _foldDispatcher;
+    [SerializeField]
+    private FoldDragPoint[] _neighbours;
 
     private Transform _transform;
     private FoldController _acquiredFoldController;
@@ -26,6 +28,17 @@ public class FoldDragPoint : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
     private Rect _bounds;
     private float _paperAngleTheta;
     private float _distance;
+    private int _lockCounter;
+
+    public bool isLocked
+    {
+        get => _lockCounter > 0;
+        set
+        {
+            if (value || _lockCounter > 0)
+                _lockCounter += value ? +1 : -1;
+        }
+    }
 
     private void Awake()
     {
@@ -37,8 +50,11 @@ public class FoldDragPoint : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
 
     void IBeginDragHandler.OnBeginDrag(PointerEventData eventData)
     {
-        if (_acquiredFoldController == null)
+        if (_acquiredFoldController == null && !isLocked)
+        {
             _acquiredFoldController = _foldDispatcher.Acquire();
+            SetNeighboursLockState(true);
+        }
     }
 
     void IDragHandler.OnDrag(PointerEventData eventData)
@@ -87,8 +103,9 @@ public class FoldDragPoint : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
     void IEndDragHandler.OnEndDrag(PointerEventData eventData)
     {
         const float kEpsilon = 0.025f;
-        if (_distance < kEpsilon)
+        if (_distance < kEpsilon && _acquiredFoldController != null)
         {
+            SetNeighboursLockState(false);
             _foldDispatcher.Release(_acquiredFoldController);
             _acquiredFoldController = null;
             _transform.position = _origin;
@@ -98,6 +115,12 @@ public class FoldDragPoint : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
     void IInitializePotentialDragHandler.OnInitializePotentialDrag(PointerEventData eventData)
     {
         eventData.useDragThreshold = false;
+    }
+
+    private void SetNeighboursLockState(bool lockState)
+    {
+        foreach (var neighbour in _neighbours)
+            neighbour.isLocked = lockState;
     }
 
     private void InitBounds()

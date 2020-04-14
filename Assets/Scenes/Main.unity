@@ -620,6 +620,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _type: 0
   _foldDispatcher: {fileID: 1567637239}
+  _neighbours:
+  - {fileID: 1996624560}
+  - {fileID: 408804311}
 --- !u!58 &190959290
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -958,6 +961,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _type: 1
   _foldDispatcher: {fileID: 1567637239}
+  _neighbours:
+  - {fileID: 1996624560}
+  - {fileID: 822934316}
+  - {fileID: 818575653}
+  - {fileID: 190959289}
 --- !u!61 &408804312
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1567,6 +1575,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _type: 0
   _foldDispatcher: {fileID: 1567637239}
+  _neighbours:
+  - {fileID: 822934316}
+  - {fileID: 408804311}
 --- !u!58 &818575654
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -1629,6 +1640,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _type: 1
   _foldDispatcher: {fileID: 1567637239}
+  _neighbours:
+  - {fileID: 1726934095}
+  - {fileID: 972205079}
+  - {fileID: 818575653}
+  - {fileID: 408804311}
 --- !u!61 &822934317
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1701,6 +1717,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _type: 0
   _foldDispatcher: {fileID: 1567637239}
+  _neighbours:
+  - {fileID: 1726934095}
+  - {fileID: 822934316}
 --- !u!58 &972205080
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -1935,6 +1954,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _type: 0
   _foldDispatcher: {fileID: 1567637239}
+  _neighbours:
+  - {fileID: 1996624560}
+  - {fileID: 1726934095}
 --- !u!58 &1093038193
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -7637,6 +7659,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _type: 1
   _foldDispatcher: {fileID: 1567637239}
+  _neighbours:
+  - {fileID: 1996624560}
+  - {fileID: 1093038192}
+  - {fileID: 972205079}
+  - {fileID: 822934316}
 --- !u!61 &1726934096
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -7971,6 +7998,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _type: 1
   _foldDispatcher: {fileID: 1567637239}
+  _neighbours:
+  - {fileID: 1093038192}
+  - {fileID: 1726934095}
+  - {fileID: 408804311}
+  - {fileID: 190959289}
 --- !u!61 &1996624561
 BoxCollider2D:
   m_ObjectHideFlags: 0

@@ -22,6 +22,7 @@ public class FoldDragPoint : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
     private Transform _transform;
     private FoldController _acquiredFoldController;
     private Vector2 _origin;
+    private Vector2 _allowedDir;
     private Rect _bounds;
     private float _paperAngleTheta;
     private float _distance;
@@ -48,6 +49,13 @@ public class FoldDragPoint : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
         var camera = eventData.pressEventCamera;
         Vector2 worldPosition = camera.ScreenToWorldPoint(eventData.position);
         Vector2 clampedPosition = worldPosition.Clamp(_bounds);
+        var allowedPosition = clampedPosition * _allowedDir;
+        if (_type == Type.Corner)
+        {
+            float xy = Mathf.Max(allowedPosition.x, allowedPosition.y);
+            clampedPosition.x = xy * _allowedDir.x;
+            clampedPosition.y = xy * _allowedDir.y;
+        }
         _transform.position = clampedPosition;
 
         var dir = _origin - clampedPosition;
@@ -105,6 +113,8 @@ public class FoldDragPoint : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
                 Mathf.Approximately(angle, 270.0f))
                 _bounds.xMin = _bounds.xMax = 0.0f;
         }
+        _allowedDir.x = Mathf.Approximately(_origin.x, 0.0f) ? 0.0f : Mathf.Sign(_origin.x);
+        _allowedDir.y = Mathf.Approximately(_origin.y, 0.0f) ? 0.0f : Mathf.Sign(_origin.y);
     }
 
     private void InitPaperAngleTheta()

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class FoldGrabPoint : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler, IInitializePotentialDragHandler
+public class FoldDragPoint : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler, IInitializePotentialDragHandler
 {
     private static readonly Rect kBounds = new Rect(-0.5f, -0.5f, 1.0f, 1.0f);
     private static readonly Vector2 kPaperCornerOffset = new Vector2(0.0f, 0.707f);

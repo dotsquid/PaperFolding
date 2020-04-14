@@ -222,8 +222,14 @@ MonoBehaviour:
   _paperTransform: {fileID: 3909716619526800855}
   _maskBackTransform: {fileID: 3909716620324619065}
   _maskFrontTransform: {fileID: 3909716620579096322}
-  _shadowRenderer: {fileID: 3909716620189842418}
   _sortingGroup: {fileID: 907606950544558181}
+  _shadowRenderer: {fileID: 3909716620189842418}
+  _shadowDistanceRange:
+    _min: 0
+    _max: 0.025
+  _shadowOpacityRange:
+    _min: 0
+    _max: 0.25
 --- !u!1 &3909716620324619064
 GameObject:
   m_ObjectHideFlags: 0

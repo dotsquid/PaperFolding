@@ -12,7 +12,9 @@ public class FoldDispatcher : MonoBehaviour
 
     private Stack<FoldController> _foldControllers = new Stack<FoldController>();
 
-    private void Awake()
+    public IEnumerable<FoldController> foldControllers => _foldControllers;
+
+    public void Init()
     {
         for (int i = 0; i < _count; ++i)
         {

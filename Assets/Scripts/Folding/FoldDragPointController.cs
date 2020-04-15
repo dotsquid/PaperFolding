@@ -14,7 +14,7 @@ public class FoldDragPointController : MonoBehaviour
     private Borders _rightBorders;
     private Borders _bottomBorders;
 
-    private void Awake()
+    public void Init()
     {
         var estimateCount = _dragPoints.Length / 4 + 1;
         _topBorders = new Borders(estimateCount);

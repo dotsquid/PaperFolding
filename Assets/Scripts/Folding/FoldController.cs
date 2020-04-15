@@ -30,6 +30,8 @@ public class FoldController : MonoBehaviour
 
     private GameObject _gameObject;
 
+    public Transform paperTransform => _paperTransform;
+
     public void Init()
     {
         _gameObject = gameObject;

@@ -22,7 +22,10 @@ public class FoldDragPoint : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
     private FoldDragPoint[] _neighbours;
 
     private Transform _transform;
+    private FoldDragPointController _controller;
     private FoldController _acquiredFoldController;
+    private FoldDragPointBorder _xBorder;
+    private FoldDragPointBorder _yBorder;
     private Vector2 _origin;
     private Vector2 _allowedDir;
     private Rect _bounds;
@@ -40,12 +43,18 @@ public class FoldDragPoint : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
         }
     }
 
-    private void Awake()
+    public Vector2 allowedDir => _allowedDir;
+    
+    public void Init(FoldDragPointController controller, FoldDragPointBorder xBorder, FoldDragPointBorder yBorder)
     {
         _transform = transform;
         _origin = _transform.position;
+        _controller = controller;
+        _xBorder = xBorder;
+        _yBorder = yBorder;
         InitBounds();
         InitPaperAngleTheta();
+        SetFoldBounds(_origin);
     }
 
     void IBeginDragHandler.OnBeginDrag(PointerEventData eventData)
@@ -64,7 +73,7 @@ public class FoldDragPoint : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
 
         var camera = eventData.pressEventCamera;
         Vector2 worldPosition = camera.ScreenToWorldPoint(eventData.position);
-        Vector2 clampedPosition = worldPosition.Clamp(_bounds);
+        Vector2 clampedPosition = _controller.RespectBorders(worldPosition.Clamp(_bounds), _allowedDir);
         var allowedPosition = clampedPosition * _allowedDir;
         if (_type == Type.Corner)
         {
@@ -73,6 +82,7 @@ public class FoldDragPoint : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
             clampedPosition.y = xy * _allowedDir.y;
         }
         _transform.position = clampedPosition;
+        SetFoldBounds(clampedPosition);
 
         var dir = _origin - clampedPosition;
         var angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
@@ -121,6 +131,12 @@ public class FoldDragPoint : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
     {
         foreach (var neighbour in _neighbours)
             neighbour.isLocked = lockState;
+    }
+
+    private void SetFoldBounds(Vector2 position)
+    {
+        _xBorder.value = position.x;
+        _yBorder.value = position.y;
     }
 
     private void InitBounds()

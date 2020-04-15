@@ -81,7 +81,7 @@ public class FoldDragPoint : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
             clampedPosition.x = xy * _allowedDir.x;
             clampedPosition.y = xy * _allowedDir.y;
         }
-        _transform.position = clampedPosition;
+        SetPosition(clampedPosition);
         SetFoldBounds(clampedPosition);
 
         var dir = _origin - clampedPosition;
@@ -118,7 +118,7 @@ public class FoldDragPoint : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
             SetNeighboursLockState(false);
             _foldDispatcher.Release(_acquiredFoldController);
             _acquiredFoldController = null;
-            _transform.position = _origin;
+            SetPosition(_origin);
         }
     }
 
@@ -137,6 +137,15 @@ public class FoldDragPoint : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
     {
         _xBorder.value = position.x;
         _yBorder.value = position.y;
+    }
+
+    private void SetPosition(Vector2 position)
+    {
+        // keep Z
+        var selfPosition = _transform.position;
+        selfPosition.x = position.x;
+        selfPosition.y = position.y;
+        _transform.position = selfPosition;
     }
 
     private void InitBounds()

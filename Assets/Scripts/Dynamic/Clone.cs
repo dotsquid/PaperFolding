@@ -18,11 +18,10 @@ public class Clone : MonoBehaviour
         SetLayerRecursively(_transform, LayerMask.NameToLayer("Back"));
     }
 
-    private void Update()
+    private void LateUpdate()
     {
         var localPosition = _root.InverseTransformPoint(_owner.position);
-        var localRotation = Quaternion.Inverse(_root.rotation) * _owner.rotation;
-        localRotation = Quaternion.Euler(-localRotation.eulerAngles);
+        var localRotation = Quaternion.Inverse(_owner.rotation) * _root.rotation;
         _transform.localPosition = localPosition;
         _transform.localRotation = localRotation;
     }
@@ -36,9 +35,9 @@ public class Clone : MonoBehaviour
 
     private static void SetLayerRecursively(Transform transform, int layer)
     {
+        transform.gameObject.layer = layer;
         foreach (Transform child in transform)
         {
-            child.gameObject.layer = layer;
             SetLayerRecursively(child, layer);
         }
     }

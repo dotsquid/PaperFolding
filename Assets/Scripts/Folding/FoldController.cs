@@ -16,9 +16,7 @@ public class FoldController : MonoBehaviour
     [SerializeField]
     private Transform _paperTransform;
     [SerializeField]
-    private Transform _maskBackTransform;
-    [SerializeField]
-    private Transform _maskFrontTransform;
+    private Transform _maskRootTransform;
     [SerializeField]
     private SortingGroup _sortingGroup;
     [SerializeField]
@@ -36,7 +34,6 @@ public class FoldController : MonoBehaviour
     {
         _gameObject = gameObject;
         _gameObject.SetActive(false);
-        _maskFrontTransform.localScale = _maskFrontTransform.localScale;
     }
 
     public void Acquire(int order)
@@ -54,13 +51,12 @@ public class FoldController : MonoBehaviour
     {
         const float kEpsilon = 0.005f;
 
-        var maskSize = _maskBackTransform.lossyScale.x * 0.5f;
+        var maskSize = _maskRootTransform.lossyScale.x * 0.5f;
         var maskOffset = data.dragDirection.normalized * maskSize;
         var maskPosition = data.maskOrigin + maskOffset;
 
         _paperTransform.SetPositionAndRotation(data.paperPosition, data.paperRotation);
-        _maskBackTransform.SetPositionAndRotation(maskPosition, data.maskRotation);
-        _maskFrontTransform.SetPositionAndRotation(maskPosition, data.maskRotation);
+        _maskRootTransform.SetPositionAndRotation(maskPosition, data.maskRotation);
 
         var shadowOpacity = MathExt.LerpClamp(data.dragDistance, _shadowDistanceRange, _shadowOpacityRange);
         _shadowRenderer.SetAlpha(shadowOpacity);

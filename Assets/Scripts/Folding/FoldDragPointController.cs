@@ -8,6 +8,8 @@ public class FoldDragPointController : MonoBehaviour
 
     [SerializeField]
     private FoldDragPoint[] _dragPoints;
+    [SerializeField]
+    private HeroTapController _heroTapController;
 
     private Borders _topBorders;
     private Borders _leftBorders;
@@ -26,7 +28,7 @@ public class FoldDragPointController : MonoBehaviour
         {
             var xBorder = new FoldDragPointBorder();
             var yBorder = new FoldDragPointBorder();
-            dragPoint.Init(this, xBorder, yBorder);
+            dragPoint.Init(_heroTapController, this, xBorder, yBorder);
             var dir = dragPoint.allowedDir;
             if (dir.x < 0.0f)
                 _leftBorders.Add(xBorder);

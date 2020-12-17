@@ -14757,6 +14757,7 @@ MonoBehaviour:
   - {fileID: 818575653}
   - {fileID: 408804311}
   - {fileID: 190959289}
+  _heroTapController: {fileID: 2139763903}
 --- !u!114 &1567637242
 MonoBehaviour:
   m_ObjectHideFlags: 0

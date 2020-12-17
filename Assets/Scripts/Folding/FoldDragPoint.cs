@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class FoldDragPoint : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler, IInitializePotentialDragHandler
+public class FoldDragPoint : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler, IInitializePotentialDragHandler, IPointerClickHandler
 {
     private static readonly Rect kBounds = new Rect(-0.5f, -0.5f, 1.0f, 1.0f);
     private static readonly Vector2 kPaperCornerOffset = new Vector2(0.0f, 0.707f);
@@ -22,6 +22,7 @@ public class FoldDragPoint : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
     private FoldDragPoint[] _neighbours;
 
     private Transform _transform;
+    private GameObject _heroTapControllerObject;
     private FoldDragPointController _controller;
     private FoldController _acquiredFoldController;
     private FoldDragPointBorder _xBorder;
@@ -32,6 +33,7 @@ public class FoldDragPoint : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
     private float _paperAngleTheta;
     private float _distance;
     private int _lockCounter;
+    private bool _isDragging;
 
     public bool isLocked
     {
@@ -45,10 +47,11 @@ public class FoldDragPoint : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
 
     public Vector2 allowedDir => _allowedDir;
     
-    public void Init(FoldDragPointController controller, FoldDragPointBorder xBorder, FoldDragPointBorder yBorder)
+    public void Init(HeroTapController heroTapController, FoldDragPointController controller, FoldDragPointBorder xBorder, FoldDragPointBorder yBorder)
     {
         _transform = transform;
         _origin = _transform.position;
+        _heroTapControllerObject = heroTapController.gameObject;
         _controller = controller;
         _xBorder = xBorder;
         _yBorder = yBorder;
@@ -59,6 +62,7 @@ public class FoldDragPoint : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
 
     void IBeginDragHandler.OnBeginDrag(PointerEventData eventData)
     {
+        _isDragging = true;
         if (_acquiredFoldController == null && !isLocked)
         {
             _acquiredFoldController = _foldDispatcher.Acquire();
@@ -120,11 +124,18 @@ public class FoldDragPoint : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
             _acquiredFoldController = null;
             SetPosition(_origin);
         }
+        _isDragging = false;
     }
 
     void IInitializePotentialDragHandler.OnInitializePotentialDrag(PointerEventData eventData)
     {
         eventData.useDragThreshold = false;
+    }
+
+    void IPointerClickHandler.OnPointerClick(PointerEventData eventData)
+    {
+        if (!_isDragging)
+            ExecuteEvents.Execute(_heroTapControllerObject, eventData, ExecuteEvents.pointerClickHandler);
     }
 
     private void SetNeighboursLockState(bool lockState)

@@ -1,5 +1,5 @@
 # Paper Folding
-This is a demo / proof of concept of a game whose mechanics is based on folding of the paper and as a result modifying the environment so the main character could reach the target.  
+This is a demo / proof of concept of a game whose mechanics is based on folding of the sheet of paper. Each side of the paper represents completely different environments. By folding the paper those environments could be combined as a result letting the main character reach the goal (this part is not implemented in this demo).  
   
 [Playable WebGL demo](https://dotsquid.gitlab.io/paperfoldingbuild/)
   
